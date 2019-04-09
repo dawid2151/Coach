@@ -119,6 +119,7 @@ namespace Coach
             OverallTraining.TrainingDays = new List<TrainingDay>();
             //Here load TrainingDays from file
 
+
             if (OverallTraining.TrainingDays.Count == 0)
             {
                 TodayTrainingDay = new TrainingDay(TodayDate);
@@ -137,6 +138,12 @@ namespace Coach
                             TodayTrainingDay = new TrainingDay(TodayDate);
                     }
             LoadTrainingDayFromFile();
+        }
+
+        public void LoadOvearallTraining()
+        {
+            //if(File.Exists(Config.TrainingDataFilePath + Config.TrainingOverallFileName))
+                //
         }
 
         public void LoadTrainingDayFromFile()
