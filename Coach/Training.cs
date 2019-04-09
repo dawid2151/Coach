@@ -10,7 +10,7 @@ namespace Coach
     public class TrainingOverall
     {
         public DateTime TrainingStartDate { get; set; }
-        public List<TrainingDay> TrainingDays { get; set; }
+        public List<TrainingDay> TrainingDays;
 
         public TrainingOverall()
         {
@@ -95,6 +95,24 @@ namespace Coach
             EndTime = new DateTime(1999, 06, 15);
             Kills = 0;
             Map = "None";
+        }
+
+    }
+
+    public class UniversalTrainingData
+    {
+        public int Kills { get; set; }
+        public int KillsHS { get; set; }
+        public int Deaths { get; set; }
+        public TimeSpan Playtime { get; set; }
+
+        public int GetKills<T>(List<T> list) where T : UniversalTrainingData
+        {
+            Kills = 0;
+            foreach (T element in list)
+                Kills += element.Kills;
+
+            return Kills;
         }
 
     }
