@@ -11,6 +11,8 @@ Run program with Administrator privileges.
 
 Run CS:GO
 
+When you're done playing press "Save to file" button.
+
 >Safe to use alongside VAC, Faceit Anticheat, ESEA or EAC.
 
 ## What it does
