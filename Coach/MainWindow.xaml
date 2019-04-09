@@ -7,6 +7,6 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
     <Grid>
-        
+        <Button Content="Save to File" Height="50" Width="100" Click="Button_Click"/>
     </Grid>
 </Window>

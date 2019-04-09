@@ -20,9 +20,17 @@ namespace Coach
     /// </summary>
     public partial class MainWindow : Window
     {
+        public MainProgram mainProgram;
+
         public MainWindow()
         {
             InitializeComponent();
+            mainProgram = new MainProgram();
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            mainProgram.SaveTrainingToFile();
         }
     }
 }
