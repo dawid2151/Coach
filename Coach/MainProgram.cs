@@ -1,7 +1,5 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+using System.Windows;
 using System.Threading.Tasks;
 using CSGSI;
 using System.Web.Script.Serialization;
@@ -39,6 +37,7 @@ namespace Coach
                 Environment.Exit(-1);
 
             TodayDate = StandarizeDate(DateTime.Now);
+            InitializeTrainingData();
         }
 
         public void OnNewGameState(GameState gameState)
@@ -46,8 +45,7 @@ namespace Coach
             if (IsStartOfCSGO)
             {
                 CSGOStartTime = DateTime.Now;
-                IsStartOfCSGO = false;
-                InitializeTrainingData();
+                IsStartOfCSGO = false; 
             }
 
             if (CheckIsPlaying(gameState))
@@ -69,6 +67,9 @@ namespace Coach
 
         public void EndSession()
         {
+            if (ActiveTrainnigSession == null)
+                return;
+
             ActiveTrainnigSession.EndTime = DateTime.Now;
             TodayTrainingDay.TrainingSessions.Add(ActiveTrainnigSession);
             ActiveTrainnigSession = null;
@@ -115,10 +116,7 @@ namespace Coach
         
         public void InitializeTrainingData()
         {
-            OverallTraining = new TrainingOverall();
-            OverallTraining.TrainingDays = new List<TrainingDay>();
-            //Here load TrainingDays from file
-
+            LoadOvearallTraining();
 
             if (OverallTraining.TrainingDays.Count == 0)
             {
@@ -137,29 +135,54 @@ namespace Coach
                         if (TodayTrainingDay == null)
                             TodayTrainingDay = new TrainingDay(TodayDate);
                     }
-            LoadTrainingDayFromFile();
         }
 
         public void LoadOvearallTraining()
         {
-            //if(File.Exists(Config.TrainingDataFilePath + Config.TrainingOverallFileName))
-                //
+            if (File.Exists(Config.TrainingDataFilePath + Config.TrainingOverallFileName))
+                OverallTraining = new TrainingOverall(DateTime.Parse(File.ReadAllText(Config.TrainingDataFilePath + Config.TrainingOverallFileName)));
+            else
+            {
+                OverallTraining = new TrainingOverall(TodayDate.Date);
+                //Training conf file not found
+            }
+
+            for(DateTime date = OverallTraining.TrainingStartDate; date.Date <= TodayDate.Date; date = date.AddDays(1))
+            {
+                if (File.Exists(Config.GetFilePath(date)))
+                {
+                    OverallTraining.TrainingDays.Add(JsonConvert.DeserializeObject<TrainingDay>(File.ReadAllText(Config.GetFilePath(date))));
+                }
+            }
+
         }
 
-        public void LoadTrainingDayFromFile()
+        public void SaveOverallTraining()
         {
-            if(File.Exists(Config.GetFilePath(TodayDate)))
+            if (!File.Exists(Config.TrainingDataFilePath + Config.TrainingOverallFileName))
             {
-                TodayTrainingDay = JsonConvert.DeserializeObject<TrainingDay>(File.ReadAllText(Config.GetFilePath(TodayDate)));
+                Directory.CreateDirectory(Config.TrainingDataFilePath);
+                File.WriteAllText(Config.TrainingDataFilePath + Config.TrainingOverallFileName, OverallTraining.TrainingStartDate.ToString());
             }
         }
 
         public void SaveTrainingToFile()
         {
-            string json = JsonConvert.SerializeObject(TodayTrainingDay, Formatting.Indented);
-            Directory.CreateDirectory(Config.TrainingDataFilePath);
-            File.WriteAllText(Config.GetFilePath(TodayDate), json);
-            
+            try
+            {
+                EndSession();
+                SaveOverallTraining();
+                if (TodayTrainingDay.TrainingSessions.Count != 0)
+                {
+                    string json = JsonConvert.SerializeObject(TodayTrainingDay, Formatting.Indented);
+                    Directory.CreateDirectory(Config.TrainingDataFilePath);
+                    File.WriteAllText(Config.GetFilePath(TodayDate), json);
+                }
+                MessageBox.Show("Saved data to " + Config.TrainingDataFilePath, "Success!");
+            } catch (Exception e)
+            {
+                MessageBox.Show(e.Message,"Problem occured...");
+            }
         }
 
     }

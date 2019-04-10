@@ -1,19 +1,18 @@
 using System.Diagnostics;
-using System.Threading.Tasks;
 
 namespace Coach
 {
     public class CSGOStateControl
     {
-        private const int CHECK_DELAY = 5000; 
-        
+        public int CheckDelay { get; set; } = 3000;
+
         public CSGOStateControl(MainProgram main)
         {
             while (true)
             {
                 if (!CheckIfCSGOOpened() && main.HasOpenSession)
                     main.EndSession();
-                System.Threading.Thread.Sleep(CHECK_DELAY);
+                System.Threading.Thread.Sleep(CheckDelay);
             }
         }
 

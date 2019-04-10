@@ -9,8 +9,36 @@ namespace Coach
 {
     public class TrainingOverall
     {
-        public DateTime TrainingStartDate { get; set; }
+        [JsonIgnore]
         public List<TrainingDay> TrainingDays;
+
+        public DateTime TrainingStartDate { get; set; }
+        public TimeSpan Playtime { get
+            {
+                TimeSpan pt = TimeSpan.Zero;
+                foreach (TrainingDay ts in TrainingDays)
+                    pt += ts.Playtime;
+
+                return pt;
+            }
+           
+        }
+        public int Kills { get
+            {
+                int k = 0;
+                foreach (TrainingDay ts in TrainingDays)
+                    k += ts.Kills;
+
+                return k;
+            }
+            
+        }
+
+        public TrainingOverall(DateTime trainingStart)
+        {
+            TrainingStartDate = trainingStart;
+            TrainingDays = new List<TrainingDay>();
+        }
 
         public TrainingOverall()
         {
@@ -24,7 +52,8 @@ namespace Coach
         public int SessionsCount { get
             {
                 return TrainingSessions.Count;
-            } }
+            }
+        }
         public DateTime TrainingDate { get; set; }
         public TimeSpan Playtime { get
             {
@@ -33,7 +62,9 @@ namespace Coach
                     pt += ts.Playtime;
 
                 return pt;
-            } }
+            }
+           
+        }
         public int Kills { get
             {
                 int k = 0;
@@ -41,7 +72,8 @@ namespace Coach
                     k += ts.Kills;
 
                 return k;
-            } }
+            } 
+        }
 
         public TrainingDay(DateTime trainingDate)
         {
@@ -99,21 +131,4 @@ namespace Coach
 
     }
 
-    public class UniversalTrainingData
-    {
-        public int Kills { get; set; }
-        public int KillsHS { get; set; }
-        public int Deaths { get; set; }
-        public TimeSpan Playtime { get; set; }
-
-        public int GetKills<T>(List<T> list) where T : UniversalTrainingData
-        {
-            Kills = 0;
-            foreach (T element in list)
-                Kills += element.Kills;
-
-            return Kills;
-        }
-
-    }
 }
