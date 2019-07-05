@@ -17,3 +17,6 @@ When you're done playing press "Save to file" button.
 
 ## What it does
 It will create folder C:\Training in which data from every day will be saved. 
+
+
+Code is terrible, classes are viotating all principles, as it ought to be proof of concept, but it proved to be flawed.
