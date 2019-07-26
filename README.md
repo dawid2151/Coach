@@ -2,6 +2,8 @@
 
 Unusefull and pointless code that will folow your progress in CS:GO, and hopefully will be able to help you train.
 
+Created using [Json.NET Newtonsoft](https://www.newtonsoft.com/json) (for parsing and serializing json data), and [CSGSI](https://github.com/rakijah/CSGSI) (for game state integration in CS:GO).
+
 ## How to use
 You have to place a "gamestate_integration_gocoach.cfg" file into your Steam\steamapps\common\Counter-Strike Global Offensive\csgo\cfg folder.
 
@@ -20,3 +22,6 @@ It will create folder C:\Training in which data from every day will be saved.
 
 
 Code is terrible, classes are viotating all principles, as it ought to be proof of concept, but it proved to be flawed.
+
+
+
