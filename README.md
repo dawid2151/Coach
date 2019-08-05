@@ -1,5 +1,7 @@
 # Coach
 
+>I am aware that parts of code are violating many principles(some methodes should be in separate classes), but as whole project was just a proof of concept.
+
 Unusefull and pointless code that will folow your progress in CS:GO, and hopefully will be able to help you train.
 
 Created using [Json.NET Newtonsoft](https://www.newtonsoft.com/json) (for parsing and serializing json data), and [CSGSI](https://github.com/rakijah/CSGSI) (for game state integration in CS:GO).
@@ -20,8 +22,6 @@ When you're done playing press "Save to file" button.
 ## What it does
 It will create folder C:\Training in which data from every day will be saved. 
 
-
->>I am aware that parts of code are violating many principles, but that whole project was just proof of concept.
 
 
 
